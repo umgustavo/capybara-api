@@ -25,7 +25,11 @@ app.use(
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
     })
 );
-app.use(helmet());
+app.use(
+    helmet({
+        crossOriginEmbedderPolicy: false,
+    })
+);
 app.use('/v1', routes);
 
 app.use(function (err, req, res, next) {
