@@ -35,6 +35,7 @@ router.get('/:id', [api_limiter], async (req, res) => {
     const img_buffer = Buffer.from(img_fetch.data, 'utf-8');
 
     res.header('Content-Type', 'image/png');
+    res.header('Cross-Origin-Resource-Policy', 'same-site');
 
     if (
         !query ||
