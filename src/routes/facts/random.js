@@ -30,7 +30,7 @@ router.get('/', [api_limiter], async (req, res) => {
     }
 
     if (query && query.lang) {
-        const lang = query.lang.toLowerCase();
+        const _lang = query.lang.toLowerCase();
         if (facts[_lang]) {
             lang = _lang;
         } else {
