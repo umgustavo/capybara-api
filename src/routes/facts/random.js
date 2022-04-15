@@ -31,7 +31,11 @@ router.get('/', [api_limiter], async (req, res) => {
 
     if (query && query.lang) {
         const lang = query.lang.toLowerCase();
-        if (!facts[lang]) return sendError(res, 'language_not_supported');
+        if (facts[_lang]) {
+            lang = _lang;
+        } else {
+            return sendError(res, 'language_not_supported');
+        }
     }
 
     const fact = facts[lang][Math.floor(Math.random() * facts[lang].length)];
