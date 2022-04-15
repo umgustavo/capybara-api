@@ -20,10 +20,6 @@ router.get('/', [api_limiter], async (req, res) => {
     const query = req.query;
 
     let lang = 'en_us';
-    if (query && query.lang) {
-        const lang = query.lang.toLowerCase();
-        if (!facts[lang]) return sendError(res, 'language_not_supported');
-    }
 
     if (req.headers['accept-language']) {
         const langs = req.headers['accept-language'].split(',');
@@ -31,6 +27,11 @@ router.get('/', [api_limiter], async (req, res) => {
             _lang = _lang.replaceAll('-', '_').toLowerCase();
             if (facts[_lang]) lang = _lang;
         }
+    }
+
+    if (query && query.lang) {
+        const lang = query.lang.toLowerCase();
+        if (!facts[lang]) return sendError(res, 'language_not_supported');
     }
 
     const fact = facts[lang][Math.floor(Math.random() * facts[lang].length)];
