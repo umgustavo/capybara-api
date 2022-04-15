@@ -21,13 +21,17 @@ router.get('/', [api_limiter], async (req, res) => {
 
     let lang = 'en_us';
     if (query && query.lang) {
-        lang = query.lang.toLowerCase();
-    }
-    if (req.headers['accept-language']) {
-        lang = req.headers['accept-language'].split(',')[0].toLowerCase();
+        const lang = query.lang.toLowerCase();
+        if (!facts[lang]) return sendError(res, 'language_not_supported');
     }
 
-    if (!facts[lang]) return sendError(res, 'language_not_supported');
+    if (req.headers['accept-language']) {
+        const langs = req.headers['accept-language'].split(',');
+        for (let _lang of langs) {
+            _lang = _lang.replaceAll('-', '_').toLowerCase();
+            if (facts[_lang]) lang = _lang;
+        }
+    }
 
     const fact = facts[lang][Math.floor(Math.random() * facts[lang].length)];
     res.json({
